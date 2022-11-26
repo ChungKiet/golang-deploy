@@ -41,7 +41,7 @@ func init() {
 
 	username := os.Getenv(USERNAME)
 	password := os.Getenv(PASSWORD)
-	mongoConn := fmt.Sprintf("mongodb+srv://%s:%s@localhost:27017/chemistry", username, password)
+	mongoConn := fmt.Sprintf("mongodb://%s:%s@localhost:27017/chemistry", username, password)
 	mongoconn := options.Client().ApplyURI(mongoConn)
 	mongoclient, err = mongo.Connect(ctx, mongoconn)
 	if err != nil {
