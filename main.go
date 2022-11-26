@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"log"
 	"os"
 
@@ -48,10 +47,10 @@ func init() {
 		log.Fatal("error while connecting with mongo", err)
 
 	}
-	err = mongoclient.Ping(ctx, readpref.Primary())
-	if err != nil {
-		log.Fatal("error while trying to ping mongo", err)
-	}
+	//err = mongoclient.Ping(ctx, readpref.Primary())
+	//if err != nil {
+	//	log.Fatal("error while trying to ping mongo", err)
+	//}
 
 	fmt.Println("mongo connection established")
 
