@@ -44,7 +44,7 @@ func init() {
 	mongoConn := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.znigccy.mongodb.net/?retryWrites=true&w=majority", username, password)
 	mongoconn := options.Client().ApplyURI(mongoConn)
 	mongoclient, err = mongo.Connect(ctx, mongoconn)
-	fmt.Println(username, " ", password)
+	fmt.Println(mongoconn)
 	if err != nil {
 		log.Fatal("error while connecting with mongo", err)
 
