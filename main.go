@@ -44,7 +44,6 @@ func init() {
 	mongoConn := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.znigccy.mongodb.net/?retryWrites=true&w=majority", username, password)
 	mongoconn := options.Client().ApplyURI(mongoConn)
 	mongoclient, err = mongo.Connect(ctx, mongoconn)
-	fmt.Println(mongoconn)
 	if err != nil {
 		log.Fatal("error while connecting with mongo", err)
 
@@ -68,5 +67,5 @@ func main() {
 	basepath := server.Group("/v1")
 	cc.RegisterUserRoutes(basepath)
 
-	server.Run(":80")
+	server.Run(":3000")
 }
