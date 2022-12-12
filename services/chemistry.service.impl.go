@@ -103,3 +103,66 @@ func (c *ChemistryServiceImpl) GetReferenceDocument(refDoc *request.GetRefDocume
 	}
 	return res, err
 }
+
+func (c *ChemistryServiceImpl) GetMenu(req *request.GetMenu) ([]string, error) {
+	if req.TypeChemical == "" {
+		return []string{"Hydro Cacbon", "Dẫn xuất hydro các bon"}, nil
+	}
+	check := 1
+	filter := bson.M{}
+	filter["type_chemical"] = req.TypeChemical
+	if req.GroupName != "" {
+		filter["group_name"] = req.GroupName
+		check = 2
+		if req.Chemical != "" {
+			filter["chemical"] = req.Chemical
+			check = 3
+		}
+	}
+
+	var res []string
+	cursor, err := c.chemistryCollection.Find(c.ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	var checkMap = make(map[string]string)
+	for cursor.Next(c.ctx) {
+		var chemistryRes models.Chemistry
+		err := cursor.Decode(&chemistryRes)
+		if err != nil {
+			return nil, err
+		}
+
+		if check == 1 {
+			_, ok := checkMap[chemistryRes.GroupName]
+			if !ok {
+				res = append(res, chemistryRes.GroupName)
+				checkMap[chemistryRes.GroupName] = ""
+			}
+		} else if check == 2 {
+			_, ok := checkMap[chemistryRes.Chemical]
+			if !ok {
+				res = append(res, chemistryRes.Chemical)
+				checkMap[chemistryRes.Chemical] = ""
+			}
+		} else {
+			_, ok := checkMap[chemistryRes.TypeSpectrum]
+			if !ok {
+				res = append(res, chemistryRes.TypeSpectrum)
+				checkMap[chemistryRes.TypeSpectrum] = ""
+			}
+		}
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	cursor.Close(c.ctx)
+
+	if len(res) == 0 {
+		return nil, errors.New("documents not found")
+	}
+
+	return res, nil
+}

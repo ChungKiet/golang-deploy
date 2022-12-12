@@ -19,5 +19,3 @@ type ReferenceDocument struct {
 	Type string             `json:"type,omitempty" bson:"type,omitempty"`
 	Url  string             `json:"url,omitempty,omitempty" bson:"url,omitempty"`
 }
-
-// write func post, put, delete to use in backend

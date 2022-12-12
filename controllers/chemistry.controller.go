@@ -47,8 +47,24 @@ func (uc *ChemistryController) GetReferenceDocument(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, refDocument)
 }
 
+func (uc *ChemistryController) GetMenu(ctx *gin.Context) {
+	var getMenuReq request.GetMenu
+	err := ctx.ShouldBindQuery(&getMenuReq)
+	if err != nil {
+		ctx.JSON(http.StatusBadGateway, gin.H{"message": err.Error()})
+		return
+	}
+	refDocument, err := uc.ChemistryService.GetMenu(&getMenuReq)
+	if err != nil {
+		ctx.JSON(http.StatusBadGateway, gin.H{"message": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, refDocument)
+}
+
 func (uc *ChemistryController) RegisterUserRoutes(rg *gin.RouterGroup) {
 	chemistryRoute := rg.Group("/chemistry")
 	chemistryRoute.GET("/get-material", uc.GetMaterialUrl)
 	chemistryRoute.GET("/get-ref-doc", uc.GetReferenceDocument)
+	chemistryRoute.GET("/menu", uc.GetMenu)
 }
