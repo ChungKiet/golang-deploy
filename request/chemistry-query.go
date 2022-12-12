@@ -1,7 +1,8 @@
 package request
 
 type GetChemistryReq struct {
-	TypeMaterial string `json:"typeMaterial" form:"typeMaterial"`
+	TypeChemical string `json:"typeChemical" form:"typeChemical"`
+	GroupName    string `json:"groupName" form:"groupName"`
 	TypeSpectrum string `json:"typeSpectrum" form:"typeSpectrum"`
 	Chemical     string `json:"chemical" form:"chemical"`
 }

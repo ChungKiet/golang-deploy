@@ -31,8 +31,12 @@ func NewUserService(chemistryCollection *mongo.Collection, refDocument *mongo.Co
 func (c *ChemistryServiceImpl) GetMaterialUrl(chemistry *request.GetChemistryReq) ([]*models.Chemistry, error) {
 	filter := bson.M{}
 	var res []*models.Chemistry
-	if chemistry.TypeMaterial != "" {
-		filter["type_material"] = chemistry.TypeMaterial
+	if chemistry.TypeChemical != "" {
+		filter["type_chemical"] = chemistry.TypeChemical
+	}
+
+	if chemistry.GroupName != "" {
+		filter["group_name"] = chemistry.GroupName
 	}
 
 	if chemistry.TypeSpectrum != "" {
