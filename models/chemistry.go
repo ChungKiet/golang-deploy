@@ -13,4 +13,11 @@ type Chemistry struct {
 	VideoUrl     string             `json:"videoUrl" bson:"video_url"`
 }
 
+type ReferenceDocument struct {
+	ID   primitive.ObjectID `json:"-" bson:"_id,omitempty"`
+	Name string             `json:"name,omitempty" bson:"name,omitempty"`
+	Type string             `json:"type,omitempty" bson:"type,omitempty"`
+	Url  string             `json:"url,omitempty,omitempty" bson:"url,omitempty"`
+}
+
 // write func post, put, delete to use in backend

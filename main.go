@@ -17,13 +17,14 @@ import (
 )
 
 var (
-	server      *gin.Engine
-	cs          services.ChemistryService
-	cc          controllers.ChemistryController
-	ctx         context.Context
-	userc       *mongo.Collection
-	mongoclient *mongo.Client
-	err         error
+	server       *gin.Engine
+	cs           services.ChemistryService
+	cc           controllers.ChemistryController
+	ctx          context.Context
+	chemistryCol *mongo.Collection
+	refDocCol    *mongo.Collection
+	mongoclient  *mongo.Client
+	err          error
 )
 
 const (
@@ -55,8 +56,10 @@ func init() {
 
 	fmt.Println("mongo connection established")
 
-	userc = mongoclient.Database("chemistry").Collection("chemistry")
-	cs = services.NewUserService(userc, ctx)
+	chemistryCol = mongoclient.Database("chemistry").Collection("chemistry")
+	refDocCol = mongoclient.Database("chemistry").Collection("ref_document")
+
+	cs = services.NewUserService(chemistryCol, refDocCol, ctx)
 	cc = controllers.New(cs)
 	server = gin.Default()
 }
