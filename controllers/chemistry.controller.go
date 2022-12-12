@@ -50,4 +50,5 @@ func (uc *ChemistryController) GetReferenceDocument(ctx *gin.Context) {
 func (uc *ChemistryController) RegisterUserRoutes(rg *gin.RouterGroup) {
 	chemistryRoute := rg.Group("/chemistry")
 	chemistryRoute.GET("/get-material", uc.GetMaterialUrl)
+	chemistryRoute.GET("/get-ref-doc", uc.GetReferenceDocument)
 }
