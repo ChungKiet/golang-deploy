@@ -104,6 +104,15 @@ func (c *ChemistryServiceImpl) GetReferenceDocument(refDoc *request.GetRefDocume
 	return res, err
 }
 
+func (c *ChemistryServiceImpl) FixAkan() {
+	filter := bson.M{}
+	filter["group_name"] = "Akan"
+
+	update := bson.M{}
+	update["group_name"] = "Ankan"
+	_, _ = c.chemistryCollection.UpdateMany(c.ctx, filter, update)
+}
+
 func (c *ChemistryServiceImpl) GetMenu(req *request.GetMenu) ([]string, error) {
 	if req.TypeChemical == "" {
 		return []string{"Hydro Cacbon", "Dẫn xuất hydro các bon"}, nil

@@ -62,9 +62,16 @@ func (uc *ChemistryController) GetMenu(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, refDocument)
 }
 
+func (uc *ChemistryController) FixAkan(ctx *gin.Context) {
+
+	uc.ChemistryService.FixAkan()
+	ctx.JSON(http.StatusOK, "Ok")
+}
+
 func (uc *ChemistryController) RegisterUserRoutes(rg *gin.RouterGroup) {
 	chemistryRoute := rg.Group("/chemistry")
 	chemistryRoute.GET("/get-material", uc.GetMaterialUrl)
 	chemistryRoute.GET("/get-ref-doc", uc.GetReferenceDocument)
 	chemistryRoute.GET("/menu", uc.GetMenu)
+	chemistryRoute.PUT("/fix-ankan", uc.FixAkan)
 }
