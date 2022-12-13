@@ -8,12 +8,12 @@ type GetChemistryReq struct {
 }
 
 type GetRefDocument struct {
-	Type string `json:"type"`
+	Type string `json:"type" form:"type"`
 }
 
 // write func post, put, delete to use in backend
 type GetMenu struct {
-	TypeChemical string `json:"typeChemical,omitempty"`
-	GroupName    string `json:"groupName,omitempty"`
-	Chemical     string `json:"chemical,omitempty"`
+	TypeChemical string `json:"typeChemical,omitempty" form:"typeChemical"`
+	GroupName    string `json:"groupName,omitempty" form:"groupName"`
+	Chemical     string `json:"chemical,omitempty" form:"chemical"`
 }
