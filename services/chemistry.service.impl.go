@@ -106,10 +106,10 @@ func (c *ChemistryServiceImpl) GetReferenceDocument(refDoc *request.GetRefDocume
 
 func (c *ChemistryServiceImpl) FixAkan() {
 	filter := bson.M{}
-	filter["group_name"] = "Akan"
+	filter["group_name"] = "Amin"
 
 	update := bson.M{}
-	update["group_name"] = "Ankan"
+	update["group_name"] = "Amine"
 	_, _ = c.chemistryCollection.UpdateMany(c.ctx, filter, update)
 }
 
