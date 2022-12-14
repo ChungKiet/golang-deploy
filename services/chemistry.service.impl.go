@@ -122,11 +122,13 @@ type MenuResponse struct {
 
 func (c *ChemistryServiceImpl) CreateChildren(typeChemistry string) []*MenuResponse {
 	filter := bson.M{}
-	filter["type_chemistry"] = typeChemistry
+	filter["type_chemical"] = typeChemistry
 	cursor, err := c.chemistryCollection.Find(c.ctx, filter)
 	if err != nil {
 		return nil
 	}
+
+	fmt.Println("Here")
 	var groupNameMap = make(map[string][]string)
 	var chemicalMap = make(map[string][]string)
 
