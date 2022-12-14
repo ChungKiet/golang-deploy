@@ -70,7 +70,7 @@ func main() {
 	cc.RegisterUserRoutes(basepath)
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"https://foo.com"},
 		AllowMethods:     []string{"GET"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
