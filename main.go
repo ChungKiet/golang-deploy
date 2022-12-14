@@ -72,11 +72,12 @@ func main() {
 	cc.RegisterUserRoutes(basepath)
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost"},
+		AllowOrigins:     []string{"http://localhost:3000", "ht"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
+		AllowAllOrigins:  true,
 		AllowOriginFunc: func(origin string) bool {
 			return origin == "https://github.com"
 		},
