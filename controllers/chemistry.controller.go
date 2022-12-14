@@ -60,9 +60,6 @@ func (uc *ChemistryController) GetMenu(ctx *gin.Context) {
 		return
 	}
 
-	ctx.Header("Access-Control-Allow-Origin", "*")
-	ctx.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-
 	ctx.JSON(http.StatusOK, refDocument)
 }
 
