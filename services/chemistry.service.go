@@ -8,6 +8,7 @@ import (
 type ChemistryService interface {
 	GetMaterialUrl(chemistry *request.GetChemistryReq) ([]*models.Chemistry, error)
 	GetReferenceDocument(chemistry *request.GetRefDocument) ([]*models.ReferenceDocument, error)
-	GetMenu(req *request.GetMenu) ([]string, error)
+	CreateChildren(typeChemistry string) []*MenuResponse
+	GetMenu(req *request.GetMenu) ([]*MenuResponse, error)
 	FixAkan()
 }

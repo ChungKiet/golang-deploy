@@ -113,65 +113,86 @@ func (c *ChemistryServiceImpl) FixAkan() {
 	_, _ = c.chemistryCollection.UpdateMany(c.ctx, filter, update)
 }
 
-func (c *ChemistryServiceImpl) GetMenu(req *request.GetMenu) ([]string, error) {
-	if req.TypeChemical == "" {
-		return []string{"Hydro Cacbon", "Dẫn xuất hydro các bon"}, nil
-	}
-	check := 1
-	filter := bson.M{}
-	filter["type_chemical"] = req.TypeChemical
-	if req.GroupName != "" {
-		filter["group_name"] = req.GroupName
-		check = 2
-		if req.Chemical != "" {
-			filter["chemical"] = req.Chemical
-			check = 3
-		}
-	}
+type MenuResponse struct {
+	ID       string          `json:"id"`
+	Name     string          `json:"name"`
+	Children []*MenuResponse `json:"children"`
+}
 
-	var res []string
+func (c *ChemistryServiceImpl) CreateChildren(typeChemistry string) []*MenuResponse {
+	filter := bson.M{}
+	filter["type_chemistry"] = typeChemistry
 	cursor, err := c.chemistryCollection.Find(c.ctx, filter)
 	if err != nil {
-		return nil, err
+		return nil
 	}
-	var checkMap = make(map[string]string)
+	var groupNameMap = make(map[string][]string)
+	var chemicalMap = make(map[string][]string)
+
 	for cursor.Next(c.ctx) {
 		var chemistryRes models.Chemistry
 		err := cursor.Decode(&chemistryRes)
 		if err != nil {
-			return nil, err
+			return nil
 		}
-
-		if check == 1 {
-			_, ok := checkMap[chemistryRes.GroupName]
-			if !ok {
-				res = append(res, chemistryRes.GroupName)
-				checkMap[chemistryRes.GroupName] = ""
-			}
-		} else if check == 2 {
-			_, ok := checkMap[chemistryRes.Chemical]
-			if !ok {
-				res = append(res, chemistryRes.Chemical)
-				checkMap[chemistryRes.Chemical] = ""
-			}
-		} else {
-			_, ok := checkMap[chemistryRes.TypeSpectrum]
-			if !ok {
-				res = append(res, chemistryRes.TypeSpectrum)
-				checkMap[chemistryRes.TypeSpectrum] = ""
-			}
-		}
+		groupNameMap[chemistryRes.GroupName] = append(groupNameMap[chemistryRes.GroupName], chemistryRes.Chemical)
+		chemicalMap[chemistryRes.Chemical] = append(chemicalMap[chemistryRes.Chemical], chemistryRes.TypeSpectrum)
 	}
 
+	var res []*MenuResponse
+
 	if err := cursor.Err(); err != nil {
-		return nil, err
+		return nil
+	}
+
+	for key := range groupNameMap {
+		res = append(res, &MenuResponse{
+			ID:   key,
+			Name: key,
+		})
+	}
+
+	for _, value := range res {
+		listValue := groupNameMap[value.Name]
+		for _, v := range listValue {
+			finaleValue := &MenuResponse{
+				ID:   v,
+				Name: v,
+			}
+
+			for _, chemisVaue := range chemicalMap[v] {
+				finaleValue.Children = append(finaleValue.Children, &MenuResponse{
+					ID:   chemisVaue,
+					Name: chemisVaue,
+				})
+			}
+			value.Children = append(value.Children, finaleValue)
+		}
 	}
 
 	cursor.Close(c.ctx)
 
 	if len(res) == 0 {
-		return nil, errors.New("documents not found")
+		return nil
 	}
 
-	return res, nil
+	return res
+}
+
+func (c *ChemistryServiceImpl) GetMenu(req *request.GetMenu) ([]*MenuResponse, error) {
+
+	var sampleRes []*MenuResponse
+	sampleRes = append(sampleRes, &MenuResponse{
+		ID:       "HYDROCACBON",
+		Name:     "Hydrocacbon",
+		Children: c.CreateChildren("HYDROCACBON"),
+	})
+
+	sampleRes = append(sampleRes, &MenuResponse{
+		ID:       "HYDROCACBON_DERIVATIVE",
+		Name:     "Dẫn Xuất Hydrocacbon",
+		Children: c.CreateChildren("HYDROCACBON_DERIVATIVE"),
+	})
+
+	return sampleRes, nil
 }
