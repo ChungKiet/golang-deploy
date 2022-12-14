@@ -128,6 +128,7 @@ func (c *ChemistryServiceImpl) CreateChildren(typeChemistry string) []*MenuRespo
 	}
 
 	var groupNameMap = make(map[string][]string)
+	var groupNameMapCheck = make(map[string]map[string]string)
 	var chemicalMap = make(map[string][]string)
 
 	for cursor.Next(c.ctx) {
@@ -137,8 +138,16 @@ func (c *ChemistryServiceImpl) CreateChildren(typeChemistry string) []*MenuRespo
 			return nil
 		}
 
-		groupNameMap[chemistryRes.GroupName] = append(groupNameMap[chemistryRes.GroupName], chemistryRes.Chemical)
+		_, ok := groupNameMapCheck[chemistryRes.GroupName]
+		if !ok {
+			groupNameMapCheck[chemistryRes.GroupName] = make(map[string]string)
+		}
+		_, ok = groupNameMapCheck[chemistryRes.GroupName][chemistryRes.Chemical]
+		if !ok {
+			groupNameMap[chemistryRes.GroupName] = append(groupNameMap[chemistryRes.GroupName], chemistryRes.Chemical)
+		}
 		chemicalMap[chemistryRes.Chemical] = append(chemicalMap[chemistryRes.Chemical], chemistryRes.TypeSpectrum)
+		groupNameMapCheck[chemistryRes.GroupName][chemistryRes.Chemical] = ""
 	}
 
 	var res []*MenuResponse
