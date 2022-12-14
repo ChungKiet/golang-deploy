@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"errors"
-	"fmt"
 	"kietchung/request"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -128,18 +127,15 @@ func (c *ChemistryServiceImpl) CreateChildren(typeChemistry string) []*MenuRespo
 		return nil
 	}
 
-	fmt.Println("Here")
 	var groupNameMap = make(map[string][]string)
 	var chemicalMap = make(map[string][]string)
 
-	fmt.Print(cursor)
 	for cursor.Next(c.ctx) {
 		var chemistryRes models.Chemistry
 		err := cursor.Decode(&chemistryRes)
 		if err != nil {
 			return nil
 		}
-		fmt.Println(chemistryRes)
 
 		groupNameMap[chemistryRes.GroupName] = append(groupNameMap[chemistryRes.GroupName], chemistryRes.Chemical)
 		chemicalMap[chemistryRes.Chemical] = append(chemicalMap[chemistryRes.Chemical], chemistryRes.TypeSpectrum)
