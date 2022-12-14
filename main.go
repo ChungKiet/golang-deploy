@@ -70,5 +70,5 @@ func main() {
 	basepath := server.Group("/v1")
 	cc.RegisterUserRoutes(basepath)
 
-	server.Run(":3000")
+	server.Run(":443")
 }
