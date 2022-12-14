@@ -48,6 +48,8 @@ func (uc *ChemistryController) GetReferenceDocument(ctx *gin.Context) {
 }
 
 func (uc *ChemistryController) GetMenu(ctx *gin.Context) {
+	ctx.Header("Access-Control-Allow-Origin", "*")
+	ctx.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
 	var getMenuReq request.GetMenu
 	err := ctx.ShouldBindQuery(&getMenuReq)
 	if err != nil {
