@@ -11,6 +11,7 @@ import (
 	"kietchung/controllers"
 	"kietchung/services"
 	"log"
+	"os"
 )
 
 var (
@@ -62,5 +63,10 @@ func main() {
 	basepath := server.Group("/v1")
 	cc.RegisterUserRoutes(basepath)
 
-	server.Run(":3000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	server.Run(":" + port)
 }
