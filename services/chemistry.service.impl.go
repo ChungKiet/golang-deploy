@@ -106,10 +106,10 @@ func (c *ChemistryServiceImpl) GetReferenceDocument(refDoc *request.GetRefDocume
 
 func (c *ChemistryServiceImpl) FixAkan() {
 	filter := bson.M{}
-	filter["group_name"] = "Amin"
+	filter["group_name"] = "Ankin"
 
 	update := bson.M{}
-	update["group_name"] = "Amine"
+	update["group_name"] = "Alkyne"
 	_, _ = c.chemistryCollection.UpdateMany(c.ctx, filter, update)
 }
 
@@ -195,13 +195,13 @@ func (c *ChemistryServiceImpl) GetMenu(req *request.GetMenu) ([]*MenuResponse, e
 	var sampleRes []*MenuResponse
 	sampleRes = append(sampleRes, &MenuResponse{
 		ID:       "HYDROCACBON",
-		Name:     "Hydrocacbon",
+		Name:     "Hydrocarbon",
 		Children: c.CreateChildren("HYDROCACBON"),
 	})
 
 	sampleRes = append(sampleRes, &MenuResponse{
 		ID:       "HYDROCACBON_DERIVATIVE",
-		Name:     "Dẫn Xuất Hydrocacbon",
+		Name:     "Dẫn Xuất Hydrocarbon",
 		Children: c.CreateChildren("HYDROCACBON_DERIVATIVE"),
 	})
 
